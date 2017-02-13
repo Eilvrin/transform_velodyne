@@ -4,11 +4,11 @@
 #include <tf_velodyne/TfVelodyneNodeConfig.h>
 #include <math.h>
 
-double theta = 0.0;
+double rps = 0.0; // Rotation velocity in rounds per second
 
 void callback(tf_velodyne::TfVelodyneNodeConfig &config, uint32_t level) {
   ROS_INFO("Reconfigure request.");
-  theta = config.theta;
+  rps = config.rps;
 }
 
 int main(int argc, char** argv){
@@ -23,11 +23,13 @@ int main(int argc, char** argv){
   tf::TransformBroadcaster br;
   tf::Transform transform;
 
+  const ros::Time t_start = ros::Time::now();
   ros::Rate rate(1000.0);
   while (node.ok()){
     transform.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
     tf::Quaternion q;
-    q.setRPY(0, 0, theta*M_PI/180);
+    double t_dif = (ros::Time::now() - t_start).toSec();
+    q.setRPY(0, 0, 2*M_PI*rps*t_dif );
     transform.setRotation(q);
     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "velodyne16"));
     rate.sleep();
