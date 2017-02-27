@@ -16,6 +16,8 @@ catkin_package(
   CATKIN_DEPENDS dynamic_reconfigure roscpp rospy  tf
 )
 
+include_directories(${catkin_INCLUDE_DIRS})
+
 add_executable(tf_velodyne_node src/tf_velodyne_node.cpp)
 add_dependencies(tf_velodyne_node tf_velodyne_gencfg)
 target_link_libraries(tf_velodyne_node ${catkin_LIBRARIES} )
