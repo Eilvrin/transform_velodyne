@@ -24,7 +24,7 @@ int main(int argc, char** argv){
   tf::Transform transform;
 
   const ros::Time t_start = ros::Time::now();
-  ros::Rate rate(1000.0);
+  ros::Rate rate(10000.0);
   while (node.ok()){
     transform.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
     tf::Quaternion q;
